@@ -35,6 +35,6 @@ func main() {
 	descTags := descRegex.FindAllStringSubmatch(crunchyHTML, -1)
 
 	for r := range titleTags {
-		fmt.Println(titleTags[r][1], "  ", strings.TrimSpace(descTags[r][1]))
+		fmt.Printf("%-50s | %-50s\n", titleTags[r][1], strings.TrimSpace(descTags[r][1]))
 	}
 }
