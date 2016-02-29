@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"regexp"
+	"strings"
 )
 
 func getHTML(url string) string {
@@ -19,10 +21,20 @@ func getHTML(url string) string {
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
+
 	return string(body)
 }
 
 func main() {
-	html := getHTML("http://www.crunchyroll.com/home/history")
-	fmt.Println(html)
+	crunchyHTML := getHTML("http://www.crunchyroll.com/home/history")
+
+	titleRX := regexp.MustCompile(`<span itemprop="name" class="series-title block ellipsis">(.+)?<\/span>`)
+	descRX := regexp.MustCompile(`<p class="short-desc">(\s.+)?<\/p>`)
+
+	titleTags := titleRX.FindAllStringSubmatch(crunchyHTML, -1)
+	descTags := descRX.FindAllStringSubmatch(crunchyHTML, -1)
+
+	for r := range titleTags {
+		fmt.Println(titleTags[r][1], "  ", strings.TrimSpace(descTags[r][1]))
+	}
 }
