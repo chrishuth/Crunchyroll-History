@@ -28,11 +28,11 @@ func getHTML(url string) string {
 func main() {
 	crunchyHTML := getHTML("http://www.crunchyroll.com/home/history")
 
-	titleRX := regexp.MustCompile(`<span itemprop="name" class="series-title block ellipsis">(.+)?<\/span>`)
-	descRX := regexp.MustCompile(`<p class="short-desc">(\s.+)?<\/p>`)
+	titleRegex := regexp.MustCompile(`<span itemprop="name" class="series-title block ellipsis">(.+)?<\/span>`)
+	descRegex := regexp.MustCompile(`<p class="short-desc">(\s.+)?<\/p>`)
 
-	titleTags := titleRX.FindAllStringSubmatch(crunchyHTML, -1)
-	descTags := descRX.FindAllStringSubmatch(crunchyHTML, -1)
+	titleTags := titleRegex.FindAllStringSubmatch(crunchyHTML, -1)
+	descTags := descRegex.FindAllStringSubmatch(crunchyHTML, -1)
 
 	for r := range titleTags {
 		fmt.Println(titleTags[r][1], "  ", strings.TrimSpace(descTags[r][1]))
